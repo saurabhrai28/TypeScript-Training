@@ -1,1 +1,5 @@
-    console.log('here you go! Hello World!')
+//*********************** Watch Mode *****************/
+const user = 'Saurabh';
+console.log(user);
+
+console.log('Hello world!!');
