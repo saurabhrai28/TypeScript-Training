@@ -1,22 +1,29 @@
 // *********************** Creating First Class ****************************/
-class Department
+abstract class Department
 {   //name of class starts with an upper case
     
     // private readonly id: string;
     // private name:  string;
+    static fiscalyear = 2024;
     protected employees : string[] = []; //can only be accessible inside the class
     
     //protected can be used within the class and extended class as well
 
-    constructor(private readonly id: string, public name:string){ 
+    constructor(protected readonly id: string, public name:string){ 
         //readonly can be accessed only in TS and not JS and once assisgned its value cant be changed 
         
         // this.id: id;
         // this.name = n;
     }
-    describe(this: Department){
-        console.log(`Department (${this.id}):${this.name}`);
-    }
+static createEMployee(name:string){
+    return {name:name};
+}
+
+abstract describe(this:Department):void;
+
+    // describe(this: Department){
+    //     console.log(`Department (${this.id}):${this.name}`);
+    // }
 
     addEmployee(employee:string){
         this.employees.push(employee);
@@ -33,11 +40,16 @@ class ITDepartment extends Department{
         super(id, 'IT'); //during inheritence, super keyword needs to be added in the inheriting class
         this.admins = admins;
     }
+
+    describe(){
+        console.log('IT Depadtment - ID:' + this.id);
+    }
 }
 
 
 class AccountingDept extends Department{
-    private lastReport: String;
+    private lastReport: string;
+    private static instance: AccountingDept;
 
     get mostRecentReport(){
         if(this.lastReport){
@@ -54,9 +66,22 @@ set mostRecentReport(value:string){
 }
 
 
-    constructor(id:string, private reports: string[]){
+    private constructor(id:string, private reports: string[]){
         super(id, 'Accounting');
         this.lastReport = reports[0];
+    }
+
+    static getInstance(){
+        if(AccountingDept.instance){
+            return this.instance;
+        }
+        this.instance = new AccountingDept('d2', []);
+        return this.instance;
+    }
+
+
+    describe(){
+        console.log('Accounting Depadtment - ID:' + this.id);
     }
 
     addEmployee(name: string){
@@ -76,6 +101,10 @@ set mostRecentReport(value:string){
     }
 }
 
+const employee1 = Department.createEMployee('Saurabh');
+console.log(employee1, Department.fiscalyear);
+
+
 const IT =  new ITDepartment ('d1',['Saurabh']);
 
 IT.addEmployee('Saurabh');
@@ -90,7 +119,11 @@ IT.printEmployeeInfo();
 
 console.log(IT);
 
-const accounting = new AccountingDept('d2', []);
+//const accounting = new AccountingDept('d2', []);
+const accounting = AccountingDept.getInstance();
+const accounting2 = AccountingDept.getInstance();
+
+console.log(accounting, accounting2);
 
 accounting.mostRecentReport = 'Year End Report';
 
@@ -103,6 +136,8 @@ accounting.addEmployee('Rishu');
 
 accounting.printReports();
 accounting.printEmployeeInfo();
+
+accounting.describe();
 
 
 // const accountingCopy = {name: 'Dummy' , describe:accounting.describe};

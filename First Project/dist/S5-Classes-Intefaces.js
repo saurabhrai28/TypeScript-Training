@@ -6,15 +6,16 @@ class Department {
         //readonly can be accessed only in TS and not JS and once assisgned its value cant be changed 
         this.id = id;
         this.name = name;
-        // private readonly id: string;
-        // private name:  string;
         this.employees = []; //can only be accessible inside the class
         // this.id: id;
         // this.name = n;
     }
-    describe() {
-        console.log(`Department (${this.id}):${this.name}`);
+    static createEMployee(name) {
+        return { name: name };
     }
+    // describe(this: Department){
+    //     console.log(`Department (${this.id}):${this.name}`);
+    // }
     addEmployee(employee) {
         this.employees.push(employee);
     }
@@ -23,10 +24,16 @@ class Department {
         console.log(this.employees);
     }
 }
+// private readonly id: string;
+// private name:  string;
+Department.fiscalyear = 2024;
 class ITDepartment extends Department {
     constructor(id, admins) {
         super(id, 'IT'); //during inheritence, super keyword needs to be added in the inheriting class
         this.admins = admins;
+    }
+    describe() {
+        console.log('IT Depadtment - ID:' + this.id);
     }
 }
 class AccountingDept extends Department {
@@ -47,6 +54,16 @@ class AccountingDept extends Department {
         this.reports = reports;
         this.lastReport = reports[0];
     }
+    static getInstance() {
+        if (AccountingDept.instance) {
+            return this.instance;
+        }
+        this.instance = new AccountingDept('d2', []);
+        return this.instance;
+    }
+    describe() {
+        console.log('Accounting Depadtment - ID:' + this.id);
+    }
     addEmployee(name) {
         if (name === 'Saurabh') {
             return;
@@ -61,6 +78,8 @@ class AccountingDept extends Department {
         console.log(this.reports);
     }
 }
+const employee1 = Department.createEMployee('Saurabh');
+console.log(employee1, Department.fiscalyear);
 const IT = new ITDepartment('d1', ['Saurabh']);
 IT.addEmployee('Saurabh');
 IT.addEmployee('Ankita');
@@ -70,7 +89,10 @@ IT.describe();
 IT.name = 'Dimple';
 IT.printEmployeeInfo();
 console.log(IT);
-const accounting = new AccountingDept('d2', []);
+//const accounting = new AccountingDept('d2', []);
+const accounting = AccountingDept.getInstance();
+const accounting2 = AccountingDept.getInstance();
+console.log(accounting, accounting2);
 accounting.mostRecentReport = 'Year End Report';
 accounting.addReport('Something went wrong...');
 console.log(accounting.mostRecentReport);
@@ -78,5 +100,6 @@ accounting.addEmployee('Saurabh');
 accounting.addEmployee('Rishu');
 accounting.printReports();
 accounting.printEmployeeInfo();
+accounting.describe();
 // const accountingCopy = {name: 'Dummy' , describe:accounting.describe};
 // accountingCopy.describe();
