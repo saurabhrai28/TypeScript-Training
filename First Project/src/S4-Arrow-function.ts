@@ -22,9 +22,9 @@ console.log (addNum1(2,5));
 
 const printOutput: (a:number|string) => void = output => console.log(output);
 
-const button = document.querySelector('button');
+const button1 = document.querySelector('button');
 
-if(button){
-    button.addEventListener('Click', event => console.log(event));
+if(button1){
+    button1.addEventListener('Click', event => console.log(event));
 }
 printOutput(addNum1(65,35));

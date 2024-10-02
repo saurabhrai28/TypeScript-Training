@@ -17,8 +17,8 @@ const addNum1 = (a, b) => {
 };
 console.log(addNum1(2, 5));
 const printOutput = output => console.log(output);
-const button = document.querySelector('button');
-if (button) {
-    button.addEventListener('Click', event => console.log(event));
+const button1 = document.querySelector('button');
+if (button1) {
+    button1.addEventListener('Click', event => console.log(event));
 }
 printOutput(addNum1(65, 35));
